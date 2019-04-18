@@ -3,6 +3,7 @@
   <div class="login" if={!currentUser}>
 		<p>Thanks for visiting. Please proceed to Google Authentication</p>
 		<button type="button" onclick={ logIn }>Login</button>
+    <p>(There is no actual use of this div. I am just implementing what we did in class with Authentication.)</p>
 	</div>
 
 	<div if={currentUser}>
@@ -10,20 +11,31 @@
 		<p>Welcome to the admin section.</p>
 		<button type="button" onclick={ logOut}>Log Out</button>
 	</div>
+
 </div>
 
-<br>
+<div class="input">
   <input type="text" ref="userInput" placeholder="Name the pet">
   <input type="text" ref="msgInput" placeholder="Type in your message" value="">
 	<button type="button" onclick={ saveMsg }>Teach the pet to talk</button>
 
+</div>
+
   <div class="order">
-    <p>order data by</p>
+    <p>order messages by</p>
     <select ref="order" value="" onchange={ orderResults }>
       <option value="default">default</option>
       <option value="username">Username</option>
     </select>
   </div>
+
+  <div class="filter">
+  <p>filter message by author</p>
+  <select ref="author" value="" onchange={ filterResults }>
+    <option value="default">Default</option>
+    <option value="Bun">Bun</option>
+  </select>
+</div>
 
   <div class="talk-list">
     	<talk-item each={ msg in messages }></talk-item>
@@ -113,6 +125,42 @@ orderResults() {
         observable.trigger('updateMessages', tempData);
       });
     }
+
+
+  //Filter data
+
+  filterResults(event) {
+        //get current filter value
+        var author = this.refs.author.value;
+        //order memes by child property funnees
+        let queryResult = messagesRef.orderByChild('id');
+        console.log("queryResult", queryResult);
+
+        //combine with additional functions to form complex queries
+        if (author == "Bun") {
+          queryResult = queryResult.equalTo('Bun');
+            // console.log("queryResult for A", queryResult);
+  
+        } else {
+          //default, no query needed
+        }
+
+        queryResult.once('value', function (snap) {
+          let rawdata = snap.val();
+          // console.log("datafromfb", datafromfb);
+          let tempData = [];
+          for (key in rawdata) {
+            tempData.push(rawdata[key]);
+          }
+          // console.log("myMemes", tag.myMemes);
+          tag.messages = tempData;
+
+          tag.update();
+          observable.trigger('updateMessages', tempData);
+        });
+      }
+
+
 //Authentication
 
     // firebase.auth().currentUser will always reflect the current authenticated user state. Gives a user object if logged in. Gives null if logged out.
@@ -168,6 +216,10 @@ orderResults() {
 		.talk-list {
 			margin-top: 20px;
 		}
+
+    .login{
+      background-color: pink;
+    }
 	</style>
 
 </talk-app>
