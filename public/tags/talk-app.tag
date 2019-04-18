@@ -84,33 +84,35 @@
 
 //orderResult
 
-orderResults(){
-  //1. get order value
-  let order = this.refs.order.value;
-  // console.log("order", order);
+orderResults() {
+      //1. get order value
+      let order = this.refs.order.value;
+      // console.log("order", order);
 
-  let orderResult = messagesRef;
-  console.log("messagesRef", messagesRef);
+      let orderResult = messagesRef;
+      console.log("messagesRef", messagesRef);
 
-  // if order is selected as funnies, then order messages by child propoerty funness
-  // if order is selected as caption, then order messages by child propoerty caption
-  // if order is elected as default, no need to reorder at specifically
+      // if order is selected as funnies, then order messages by child propoerty funness if order is selected as caption, then order messages by child propoerty caption if order is elected as default, no need to reorder at specifically
+      if(order=="username"){
+        orderResult = orderResult.orderByChild("id");
+      }else if(order=="default"){
 
+      }
 
-  orderResult.once('value', function (snap) {
-    let tempData = snap.val();
-    // console.log("datafromfb", datafromfb);
+      orderResult.once('value', function (snap) {
+        // let rawdata = snap.val(); console.log("datafromfb", datafromfb);
+        let tempData = [];
 
-    //prepare an empty js array to store firebase data
+        snap.forEach(function (child) {
+          tempData.push(child.val()); // NOW THE CHILDREN PRINT IN ORDER
+        });
 
-    //get each child value of the the snapshot, and push child.val() into our temporary database
+        tag.messages = tempData;
 
-    //update our tag's myMemes property with sorted firebase data
-
-    //calling our tag to manually update so that changes get reflected on the memes tab
-
-  });
-}
+        tag.update();
+        observable.trigger('updateMessages', tempData);
+      });
+    }
 //Authentication
 
     // firebase.auth().currentUser will always reflect the current authenticated user state. Gives a user object if logged in. Gives null if logged out.
