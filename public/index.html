@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>My pet</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+</head>
+
+<body>
+  <!-- place the custom tag anywhere inside the body -->
+  <pet></pet>
+  <talk-app></talk-app>
+
+  <!-- include the tag -->
+  <script type="riot/tag" src="tags/pet.tag"></script>
+  <script src="tags/talk-app.tag" type="riot/tag"></script>
+  <script src="tags/talk-item.tag" type="riot/tag"></script>
+  <!-- include riot.js -->
+  <script src="https://cdn.jsdelivr.net/npm/riot@3.8/riot+compiler.min.js"></script>
+
+
+
+  <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyAMwgExFj3UvqhkNf-WTBdxjwXkQ-TOH4I",
+      authDomain: "mstu5031-hw5.firebaseapp.com",
+      databaseURL: "https://mstu5031-hw5.firebaseio.com",
+      projectId: "mstu5031-hw5",
+      storageBucket: "mstu5031-hw5.appspot.com",
+      messagingSenderId: "613082466812"
+    };
+    firebase.initializeApp(config);
+
+    // Firebase Cached References
+    		var user = firebase.auth();
+    var database = firebase.database();
+    var rootRef = database.ref('/');
+
+    // Initialize RiotJS
+    riot.mount('*');
+  </script>
+
+  <style>
+    /* aligning monster at the center of the setting */
+    /* adding padding space towards the inside of my html space  */
+    body {
+      text-align: center;
+      padding: 10px;
+      background: white;
+    }
+  </style>
+</body>
+
+</html>
